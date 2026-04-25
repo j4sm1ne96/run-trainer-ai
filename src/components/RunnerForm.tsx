@@ -1,16 +1,32 @@
 'use client';
 
 import { useState, SyntheticEvent } from "react";
+import { RunnerProfile } from "@/types";
 
-export default function RunnerForm() {
+interface RunnerFormProps {
+    onSubmit: (profile: RunnerProfile) => void
+}
+
+export default function RunnerForm({onSubmit}: RunnerFormProps) {
     const [raceDistance, setRaceDistance] = useState('');
     const [experienceLevel, setExperienceLevel] = useState('');
     const [weeklyMileage, setWeeklyMileage] = useState('');
+    const [unit, setUnit] = useState<'km' | 'miles'>('km');
     const [date, setDate] = useState('');
 
     function handleSubmit(e: SyntheticEvent) {
         e.preventDefault();
-        console.log({ raceDistance, experienceLevel, weeklyMileage, date });
+        console.log({ raceDistance, experienceLevel, weeklyMileage, unit, date });
+
+        const profile: RunnerProfile = {
+            goalRace: raceDistance as RunnerProfile['goalRace'],
+            goalDate: date,
+            weeklyMileage: Number(weeklyMileage),
+            unit: unit,
+            experienceLevel: experienceLevel as RunnerProfile['experienceLevel']
+        }
+
+        onSubmit(profile)
     }
 
     return (
@@ -46,14 +62,25 @@ export default function RunnerForm() {
             </label>
             <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
                 Weekly Mileage:
-                <input
-                    value={weeklyMileage}
-                    onChange={e => setWeeklyMileage(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                />
+                <div className="flex gap-2">
+                    <input
+                        type="number"
+                        value={weeklyMileage}
+                        onChange={e => setWeeklyMileage(e.target.value)}
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    />
+                    <select
+                        value={unit}
+                        onChange={e => setUnit(e.target.value as 'km' | 'miles')}
+                        className="border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    >
+                        <option value="km">km</option>
+                        <option value="miles">miles</option>
+                    </select>
+                </div>
             </label>
             <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
-                Date:
+                Race Date:
                 <input type="date"
                     value={date}
                     onChange={e => setDate(e.target.value)}

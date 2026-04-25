@@ -1,20 +1,21 @@
-type RaceDistance = '5k' | '10k' | 'half-marathon' | 'marathon'
-type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced'
+export type RaceDistance = '5k' | '10k' | 'half-marathon' | 'marathon'
+export type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced'
 
-interface RunnerProfile {
+export interface RunnerProfile {
   goalRace: RaceDistance
   goalDate: string
   weeklyMileage: number
+  unit: 'km' | 'miles'
   experienceLevel: ExperienceLevel
 }
 
-interface TrainingSession {
+export interface TrainingSession {
   type: 'easy' | 'tempo' | 'long' | 'rest' | 'intervals'
   distance?: number
   notes: string
 }
 
-interface TrainingWeek {
+export interface TrainingWeek {
   weekNumber: number
   monday: TrainingSession
   tuesday: TrainingSession
@@ -25,7 +26,7 @@ interface TrainingWeek {
   sunday: TrainingSession
 }
 
-interface TrainingPlan {
+export interface TrainingPlan {
   weeks: TrainingWeek[]
   summary: string
 }
